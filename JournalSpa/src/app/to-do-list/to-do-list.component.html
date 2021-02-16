@@ -1,0 +1,136 @@
+<ng-container>
+  <form [formGroup]="toDoitem">
+    <mat-grid-list cols="5">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Name of to do </mat-label>
+          <input formControlName="nameOfToDo" matInput class="input-Text">
+
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Is Required </mat-label>
+          <mat-select formControlName="isRequired">
+            <mat-option *ngFor="let opt of isRequiredValues" [value]="opt">
+              {{opt}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+
+        <mat-label>Is Completed </mat-label>
+        <mat-checkbox (change)="setComplete($event.checked)"></mat-checkbox>
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>To Be Completed By</mat-label>
+          <input formControlName="toBeCompletedBy" matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-raised-button (click)="postToDoItem()">Post</button>
+
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </form>
+  <table mat-table [dataSource]="pendingDataSource" matSort>
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+      <td mat-cell *matCellDef="let element; let i = index;">{{i+1}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="nameOfToDo">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.nameOfToDo}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="isComplete">
+      <th mat-header-cell *matHeaderCellDef> Completed </th>
+      <mat-checkbox (change)="setComplete($event.checked)"></mat-checkbox>
+
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? pendingSelection.toggle(row) : null"
+          [checked]="pendingSelection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="isRequired">
+      <th mat-header-cell *matHeaderCellDef> isRequired </th>
+      <td mat-cell *matCellDef="let element"> {{element.isRequired}} </td>
+
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="toBeCompletedBy">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> Priority </th>
+      <td mat-cell *matCellDef="let element"> {{element.toBeCompletedBy|date:'dd MMM., yyyy'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="actionsColumn">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let element let rowIndex=index">
+        <button mat-raised-button (click)="updatePendingToDoItem(element,rowIndex)">Update</button>
+        <mat-icon (click)="deleteCompletedData(element,rowIndex)">delete</mat-icon>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <table mat-table [dataSource]="completedDataSource">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element; let i = index;">{{i+1}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="nameOfToDo">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.nameOfToDo}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="isComplete">
+      <th mat-header-cell *matHeaderCellDef>Is Not Completed </th>
+      <mat-checkbox (change)="setComplete($event.checked)"></mat-checkbox>
+
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? completedSelection.toggle(row) : null"
+          [checked]="completedSelection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="isRequired">
+      <th mat-header-cell *matHeaderCellDef> isRequired </th>
+      <td mat-cell *matCellDef="let element"> {{element.isRequired}} </td>
+
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="toBeCompletedBy">
+      <th mat-header-cell *matHeaderCellDef> Priority </th>
+      <td mat-cell *matCellDef="let element"> {{element.toBeCompletedBy|date:'mediumDate'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="actionsColumn">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let element let rowIndex=index">
+        <button mat-raised-button (click)="updateCompleteToDoItem(element,rowIndex)">Update</button>
+        <mat-icon (click)="deletePendingData(element,rowIndex)">delete</mat-icon>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</ng-container>

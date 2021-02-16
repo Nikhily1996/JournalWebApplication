@@ -1,0 +1,26 @@
+<mat-card >
+    <mat-card-content >
+        <div >
+<mat-form-field class="controls" appearance="fill">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker" [formControl]="date">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+<button mat-raised-button (click)="setJournalPageAsSpecial()"  >Special
+    <mat-icon (click)="setJournalPageAsSpecial()"  [ngStyle]="{'color':special?'white':'red'}">star</mat-icon>
+</button>
+<button mat-raised-button (click)="postJournalPage()">Post</button>
+
+</div>
+<div >
+    <mat-form-field class="textarea">
+        <mat-label>Enter your thoughts about {{date.value}} </mat-label>
+        <textarea [formControl]="JournalPageText" matInput class="input-Text"></textarea>
+    </mat-form-field>
+    <button style="margin-left: 12px;" mat-fab color="primary" (click)="deleteJournalPage()"   aria-label="Example icon button with a delete icon">
+        <mat-icon>delete</mat-icon>
+    </button>
+</div>
+</mat-card-content>
+</mat-card>

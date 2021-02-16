@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Hi {{data.nameOfBucketItem}}</h1>
+<div mat-dialog-content>
+  
+        <mat-grid-list cols="4">
+          <mat-grid-tile>
+            <mat-form-field>
+              <mat-label>photosLink </mat-label>
+              <input  matInput  [(ngModel)]="data.photosLink"  class="input-Text">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-label>Is Completed </mat-label>
+             <mat-checkbox (change)="setComplete($event.checked)" [checked]="data.isComplete==='true'?true:false" ></mat-checkbox>
+          </mat-grid-tile>
+        </mat-grid-list>
+    
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>

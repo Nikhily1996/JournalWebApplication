@@ -1,0 +1,18 @@
+
+<!-- add below piece of code in web.config in order for app to wokr with put and deleterequest
+<system.webServer>
+    <modules runAllManagedModulesForAllRequests="false">
+      <remove name="WebDAVModule" />
+    </modules>
+  </system.webServer> -->
+<mat-tab-group mat-align-tabs="center"> 
+    <mat-tab label="To Do List">
+        <app-to-do-list></app-to-do-list>
+    </mat-tab>
+    <mat-tab label="Bucket List">
+        <app-bucket-list></app-bucket-list>
+    </mat-tab>
+    <mat-tab label="Journal">
+        <app-journal></app-journal>
+    </mat-tab>
+</mat-tab-group>
